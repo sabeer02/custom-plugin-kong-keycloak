@@ -1,0 +1,32 @@
+image:
+  repository: kong-custom
+  tag: "1.0"
+  pullPolicy: IfNotPresent
+
+env:
+  database: "off"
+  plugins: bundled,keycloak-rate-limit
+  log_level: debug
+  admin_api_uri: "http://localhost:8001"
+
+proxy:
+  enabled: true
+  type: LoadBalancer
+  http:
+    enabled: true
+    servicePort: 80
+    containerPort: 8000
+
+admin:
+  enabled: true
+  type: LoadBalancer
+  http:
+    enabled: true
+    servicePort: 8001
+    containerPort: 8001
+
+postgresql:
+  enabled: false
+
+ingressController:
+  enabled: false

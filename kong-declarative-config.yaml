@@ -1,0 +1,17 @@
+_format_version: "3.0"
+
+services:
+  - name: test-service
+    url: http://httpbin.org
+    routes:
+      - name: test-route
+        paths:
+          - /test
+    plugins:
+      - name: keycloak-rate-limit
+        config:
+          keycloak_url: http://192.168.181.75:8080
+          realm: sabeer
+          client_id: kong-introspection
+          client_secret: dXsd1h8QpS8DJsbw3hBX4oFCkj9903V0
+          timeout: 10000

@@ -1,0 +1,46 @@
+image:
+  repository: kong
+  tag: "3.5"
+
+env:
+  database: "off"
+  plugins: bundled,keycloak-rate-limit
+  lua_package_path: "/opt/?.lua;/opt/?/init.lua;;"
+  log_level: debug
+  admin_api_uri: "http://localhost:8001"
+
+proxy:
+  enabled: true
+  type: LoadBalancer
+  http:
+    enabled: true
+    servicePort: 80
+    containerPort: 8000
+
+admin:
+  enabled: true
+  type: LoadBalancer
+  http:
+    enabled: true
+    servicePort: 8001
+    containerPort: 8001
+
+postgresql:
+  enabled: false
+
+ingressController:
+  enabled: false
+
+deployment:
+  kong:
+    enabled: true
+
+extraVolumes:
+  - name: keycloak-rate-limit-plugin
+    configMap:
+      name: keycloak-rate-limit-plugin
+
+extraVolumeMounts:
+  - name: keycloak-rate-limit-plugin
+    mountPath: /opt/keycloak-rate-limit
+    readOnly: true

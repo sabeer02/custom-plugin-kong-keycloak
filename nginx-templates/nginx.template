@@ -1,0 +1,18 @@
+> if #nginx_user > 0 then
+user $(NGINX_USER);
+> end
+worker_processes $(NGINX_WORKER_PROCESSES);
+daemon $(NGINX_DAEMON);
+
+pid pids/nginx.pid;
+error_log logs/error.log $(LOG_LEVEL);
+
+events {
+    worker_connections 16384;
+}
+
+http {
+    lua_shared_dict kong_rate_limiting_counters 12m;
+    
+    include 'nginx-kong.conf';
+}

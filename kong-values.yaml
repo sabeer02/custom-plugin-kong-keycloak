@@ -1,0 +1,51 @@
+# kong-values.yaml - Initial installation without custom plugin
+image:
+  repository: kong
+  tag: "3.5"
+
+env:
+  # Database-less mode (simpler for development)
+  database: "off"
+  
+  # Only bundled plugins for now
+  plugins: bundled
+  
+  # Logging
+  log_level: debug
+  
+  # Admin API
+  admin_api_uri: "http://localhost:8001"
+
+  declarative_config: /kong_dbless/kong.yaml
+
+# Enable Proxy service
+proxy:
+  enabled: true
+  type: LoadBalancer
+  http:
+    enabled: true
+    servicePort: 80
+    containerPort: 8000
+  tls:
+    enabled: false
+
+# Enable Admin API
+admin:
+  enabled: true
+  type: LoadBalancer
+  http:
+    enabled: true
+    servicePort: 8001
+    containerPort: 8001
+
+# PostgreSQL (disabled for DB-less mode)
+postgresql:
+  enabled: false
+
+# Ingress Controller (disabled for simplicity)
+ingressController:
+  enabled: false
+
+# Mount the declarative config
+dblessConfig:
+  configMap: kong-declarative-config
